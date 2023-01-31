@@ -17,6 +17,7 @@ export class FirebaseService {
   public fireStore: Firestore;
   public usersCollection: CollectionReference;
   public contactsCollection: CollectionReference;
+
   constructor(private configService: ConfigService<Config>) {
     this.app = initializeApp({
       apiKey: configService.get<string>('apiKey'),

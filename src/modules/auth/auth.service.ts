@@ -77,7 +77,6 @@ export class AuthService {
         );
 
       if (userCredential) {
-        console.log(userCredential);
         const id: string = userCredential.user.uid;
         const docRef: DocumentReference = doc(
           this.fireBaseService.usersCollection,
