@@ -3,20 +3,21 @@ import {
     IsNotEmpty,
     IsString,
 } from 'class-validator'
+import { TrickConfig } from './trick-config.dto'
 
-export class AuthDto {
+export class CreateTrickDto {
     @IsString()
-    id: string;
+    @IsNotEmpty()
+    uuid: string;
     
     @IsString()
     @IsNotEmpty()
     name: string;
-    
-    @IsEmail()
-    @IsNotEmpty()
-    email: string;
 
     @IsString()
     @IsNotEmpty()
-    password: string;
+    level: string;
+    
+    @IsNotEmpty()
+    config: TrickConfig;
 }
