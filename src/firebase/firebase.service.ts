@@ -16,6 +16,8 @@ export class FirebaseService {
   public auth: Auth;
   public fireStore: Firestore;
   public usersCollection: CollectionReference;
+  public contactsCollection: CollectionReference;
+
   constructor(private configService: ConfigService<Config>) {
     this.app = initializeApp({
       apiKey: configService.get<string>('apiKey'),
@@ -33,5 +35,6 @@ export class FirebaseService {
 
   private _createCollections() {
     this.usersCollection = collection(this.fireStore, 'users');
+    this.contactsCollection = collection(this.fireStore, 'tricks');
   }
 }

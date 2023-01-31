@@ -14,30 +14,30 @@ import {
   DocumentData
 } from 'firebase/firestore';
 import { FirebaseService } from '../../firebase/firebase.service';
-import { User } from 'src/models/user.model';
+import { AuthDto } from './dto/auth.dto';
 
 @Injectable()
 export class AuthService {
   constructor(private fireBaseService: FirebaseService) {}
   private _errorHandler(code) {
-    if (code === 'auth/wrong-password') {
-      throw new HttpException(
-        'Email or password incorrect.',
-        HttpStatus.FORBIDDEN
-      );
-    }
+    switch(code) {
+      case 'auth/wrong-password':
+        throw new HttpException(
+            'Email or password incorrect.',
+            HttpStatus.FORBIDDEN
+        );
 
-    if (code === 'auth/user-not-found') {
-      throw new HttpException('Email not found.', HttpStatus.NOT_FOUND);
-    }
+      case 'auth/user-not-found':
+        throw new HttpException('Email not found.', HttpStatus.NOT_FOUND);
 
-    if (code === 'auth/email-already-in-use') {
-      throw new HttpException('Email is already used', HttpStatus.CONFLICT);
-    } else {
-      throw new HttpException('Error', HttpStatus.BAD_REQUEST);
+      case 'auth/email-already-in-use':
+        throw new HttpException('Email is already used', HttpStatus.CONFLICT);
+
+      default:
+        throw new HttpException('Error', HttpStatus.BAD_REQUEST);
     }
   }
-  public async login(body): Promise<Omit<User, 'password'>> {
+  public async login(body): Promise<Omit<AuthDto, 'password'>> {
     try {
       const userCredential: UserCredential = await signInWithEmailAndPassword(
         this.fireBaseService.auth,
@@ -52,10 +52,10 @@ export class AuthService {
           id
         );
         const snapshot: DocumentSnapshot<DocumentData> = await getDoc(docRef);
-        const loggedUser: User = {
+        const loggedUser: AuthDto = {
           ...snapshot.data(),
           id: snapshot.id
-        } as User;
+        } as AuthDto;
 
         delete loggedUser.password;
 
