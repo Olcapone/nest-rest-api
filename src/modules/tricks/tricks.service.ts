@@ -17,12 +17,6 @@ import { FirebaseService } from '../../firebase/firebase.service';
 @Injectable()
 export class TricksService {
   constructor(private fireBaseService: FirebaseService) {}
-  private _errorHandler(code) {
-    switch (code) {
-      case 'tricks/trick-is-exist':
-        throw new HttpException('This trick is exist', HttpStatus.BAD_REQUEST);
-    }
-  }
   public async create(createTrickDto: CreateTrickDto) {
     try {
       await addDoc(this.fireBaseService.tricksCollection, createTrickDto);
