@@ -22,11 +22,11 @@ jobs:
         with:
           node-version: 18
 
-      - name: 🤖 npm install
-        run: npm install
+      - name: 🤖 yarn
+        run: yarn
 
       - name: 🧪 Run tests and count lines
-        run: npm test
+        run: yarn test
 
       - name: 🎉 Send metrics to server
         run: node metrics.js
