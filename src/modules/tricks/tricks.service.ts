@@ -32,8 +32,7 @@ export class TricksService {
     querySnapshot.forEach((doc) => {
       tricks.push(doc.data());
     });
-
-    return tricks;
+    return tricks
   }
 
   public async findOne(id: string) {
@@ -41,12 +40,10 @@ export class TricksService {
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      return { data: docSnap.data() };
+      return docSnap.data()
     } else {
       return {
-        data: {
           message: 'tricks not find!'
-        }
       };
     }
   }
