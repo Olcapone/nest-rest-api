@@ -1,14 +1,6 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
-import { initializeApp, getApps, cert } from "firebase-admin/app";
 import { getAuth } from "firebase-admin/auth";
-
-const apps = getApps();
-if (!apps.length) {
-  initializeApp({
-    credential: cert("src/config/serviceAccountKey.json"),
-  });
-}
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
