@@ -67,6 +67,8 @@ typings/
 
 # Yarn Integrity file
 .yarn-integrity
+yarn.lock
+package-lock.json
 
 # dotenv environment variables file
 .env
@@ -102,3 +104,5 @@ dist
 
 # TernJS port file
 .tern-port
+.idea
+serviceAccountKey.json
