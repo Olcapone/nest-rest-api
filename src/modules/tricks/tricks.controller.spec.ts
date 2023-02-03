@@ -1,17 +1,30 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { TricksController } from './tricks.controller';
 import { TricksService } from './tricks.service';
+import { FirebaseService } from '../../firebase/firebase.service'
 
-describe('UsersController', () => {
+describe('TricksController', () => {
   let controller: TricksController;
+  let tricksService: TricksService;
+  let fireBase: FirebaseService;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [TricksController],
-      providers: [TricksService],
-    }).compile();
+  beforeEach(() => {
+    tricksService = new TricksService(fireBase);
+    controller = new TricksController(tricksService);
+  });
 
-    controller = module.get<TricksController>(TricksController);
+  describe('findAll', () => {
+    it('should return an array of tricks', async () => {
+      const result = ['test'];
+      jest.spyOn(tricksService, 'findAll')
+          .mockImplementation(() => {
+            return new Promise((resolve): void => {
+              resolve(result);
+            });
+          });
+
+      expect(await controller.findAll()).toBe(result);
+    });
   });
 
   it('should be defined', () => {

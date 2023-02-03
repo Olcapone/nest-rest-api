@@ -1,17 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
+import { FirebaseService } from '../../firebase/firebase.service'
 
 describe('AuthController', () => {
   let controller: AuthController;
+  let authService: AuthService;
+  let fireBase: FirebaseService;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [AuthController],
-      providers: [AuthService],
-    }).compile();
-
-    controller = module.get<AuthController>(AuthController);
+  beforeEach(() => {
+    authService = new AuthService(fireBase);
+    controller = new AuthController(authService);
   });
 
   it('should be defined', () => {

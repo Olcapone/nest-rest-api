@@ -1,10 +1,13 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateTrickDto } from './dto/create-trick.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { UpdateTrickDto } from './dto/update-trick.dto';
 import {
   addDoc,
+  getDoc,
   getDocs,
   setDoc,
+  updateDoc,
+  deleteDoc,
   DocumentReference,
   doc,
   collection
@@ -14,43 +17,49 @@ import { FirebaseService } from '../../firebase/firebase.service';
 @Injectable()
 export class TricksService {
   constructor(private fireBaseService: FirebaseService) {}
-  private _errorHandler(code) {
-    switch(code) {
-      case 'tricks/trick-is-exist':
-        throw new HttpException(
-            'This trick is exist',
-            HttpStatus.BAD_REQUEST
-        );
-    }
-  }
   public async create(createTrickDto: CreateTrickDto) {
     try {
-      await addDoc(collection(this.fireBaseService.fireStore, 'tricks'),
-          createTrickDto
-      );
+      await addDoc(this.fireBaseService.tricksCollection, createTrickDto);
     } catch (error) {
       console.log(error.code);
     }
   }
 
   public async findAll() {
-    const querySnapshot = await getDocs(collection(this.fireBaseService.fireStore, "tricks"));
+    let tricks = [];
+    const querySnapshot = await getDocs(this.fireBaseService.tricksCollection);
+
     querySnapshot.forEach((doc) => {
-      console.log(`${doc.id} => ${doc.data()}`);
+      tricks.push(doc.data());
     });
 
-    return `This action returns all users`;
+    return tricks;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  public async findOne(id: string) {
+    const docRef = doc(this.fireBaseService.fireStore, 'tricks', id);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      return { data: docSnap.data() };
+    } else {
+      return {
+        data: {
+          message: 'tricks not find!'
+        }
+      };
+    }
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
+  public async update(id: string, updateTrickData: UpdateTrickDto) {
+    await updateDoc(doc(this.fireBaseService.fireStore, 'tricks', id), {
+      ...updateTrickData
+    });
     return `This action updates a #${id} user`;
   }
 
-  remove(id: number) {
+  public async remove(id: string) {
+    await deleteDoc(doc(this.fireBaseService.fireStore, 'tricks', id));
     return `This action removes a #${id} user`;
   }
 }
