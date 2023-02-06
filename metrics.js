@@ -43,7 +43,7 @@ function jsonData(value) {
 
 function metricFetch(projectId, metricName, metricValue) {
   fetch(
-    'https://api.metrics.anadea.co/api/metrics?' +
+    'https://api-stage.metrics.anadea.co/api/metrics?' +
     new URLSearchParams({
       projectId: projectId,
       metricName: metricName,
