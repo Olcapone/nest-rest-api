@@ -26,7 +26,7 @@ jobs:
         run: yarn
 
       - name: 🧪 Run tests and count lines
-        run: yarn test
+        run: yarn run test --all  --coverage
         
       - name: Install parser
         run: yarn add node-html-parser
