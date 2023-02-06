@@ -28,6 +28,9 @@ jobs:
       - name: 🧪 Run tests and count lines
         run: yarn run test --all  --coverage
         
+      - name: 🧪 yarn add cloc
+        run: yarn add cloc
+        
       - name: 🧪 Run cloc for project
         run: cloc --by-file src --report-file=coverage/codeLines
         
