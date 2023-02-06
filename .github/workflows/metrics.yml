@@ -28,6 +28,12 @@ jobs:
       - name: 🧪 Run tests and count lines
         run: yarn run test --all  --coverage
         
+      - name: 🧪 Run cloc for project
+        run: cloc --by-file src --report-file=coverage/codeLines
+        
+      - name: 🧪 Run cloc for tests
+        run: cloc --by-file test --report-file=coverage/testLines
+        
       - name: Install parser
         run: yarn add node-html-parser
 
